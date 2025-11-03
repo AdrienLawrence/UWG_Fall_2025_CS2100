@@ -38,7 +38,7 @@ Traditional document applications lack the UX for longer notes. Without page ref
 
 - ScribeAI uses a mandatory header on every page within a notebook. This header serves as the page reference so that in the notebook editor, a user may switch the sidebar to 'Read' mode which changes the sidebar to display a bulleted list of every page. If a user named their pages "Lecture Day x", their bulleted list would be listed in chronological order for every day they took notes. This would allow near instant traversal to any desired page with not searching. Simply click on the bullet with the page name matching what you are looking for. 
 
-# ScribeAI Solution #2: Variable Page Length
+## ScribeAI Solution #2: Variable Page Length
 
 - ScribeAI Solution #2: ScribeAI also uses a 'flow' style of page length as opposed to a fixed size. This allows for pages to extend with more content as the bottom of the page is reached, as opposed to moving to a new page. This keeps page references ordered without any 'cont.' pages cluttering up the sidebar as well as keeping desired notes clustered on the same page. The tradeoff is that printing notebook pages will be harder to implement but I can simply allow a switch between 'flow' and 'fixed' page lengths later on or the print button may cut the pages down to the correct size then as opposed to visually in the editor.
 
