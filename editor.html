@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor - ScribeAI</title>
+    <link rel="stylesheet" href="project.css">
+</head>
+<body>
+    <div class="editor-container">
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-label">Mode</div>
+                <select class="sidebar-btn">
+                    <option>Write</option>
+                    <option>Read</option>
+                </select>
+            </div>
+
+            <!-- Text formatting -->
+            <div class="sidebar-section">
+                <div class="sidebar-label">Format</div>
+                <div class="formatting-grid">
+                    <button class="formatting-btn">B</button>
+                    <button class="formatting-btn">I</button>
+                    <button class="formatting-btn">U</button>
+                    <button class="formatting-btn">S</button>
+                </div>
+            </div>
+
+            <!-- Text styling-->
+            <div class="sidebar-section">
+                <div class="sidebar-label">Font</div>
+                <select class="sidebar-btn">
+                    <option>Arial</option>
+                    <option>Times New Roman</option>
+                </select>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-label">Size</div>
+                <input type="text" value="12" class="sidebar-btn">
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-label">Color</div>
+                <input type="color" class="sidebar-btn">
+            </div>
+
+            <!-- Page formatting -->
+            <div class="sidebar-section">
+                <div class="sidebar-label">Alignment</div>
+                <button class="sidebar-btn">Left</button>
+                <button class="sidebar-btn">Center</button>
+                <button class="sidebar-btn">Right</button>
+            </div>
+
+            <!-- List options -->
+            <div class="sidebar-section">
+                <div class="sidebar-label">Lists</div>
+                <button class="sidebar-btn">• Bullets</button>
+                <button class="sidebar-btn">1. Numbers</button>
+            </div>
+
+            <!-- FIle options-->
+            <div class="sidebar-section">
+                <div class="sidebar-label">File</div>
+                <button class="sidebar-btn">Save</button>
+                <button class="sidebar-btn" onclick="location.href='notebooks.html'">Home</button>
+            </div>
+        </div>
+
+    <!-- Navigation Arrows for travelling between pages -->
+    <div class="navigation">
+        <button class="nav-arrow" aria-label="Previous page">
+            ‹
+        </button>
+        <button class="nav-arrow" aria-label="Next page">
+            ›
+        </button>
+    </div>
+
+        <!-- Page element, the current notebook page -->
+        <div class="main-content">
+            <div class="paper">
+                <input type="text" class="title-input" value="Page Name">
+                <div class="editor-content">
+                    Main Content Area
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
