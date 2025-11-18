@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - ScribeAI</title>
+    <link rel="stylesheet" href="project.css">
+</head>
+<body>
+    <div class="homepage">
+        <!-- Header -->
+        <header class="header" role="banner">
+            <div class="container header-content">
+                <a href="index.html" class="logo" aria-label="ScribeAI Home">
+                    ScribeAI
+                </a>
+                <nav class="nav">
+                    <a href="index.html">Home</a>
+                    <a href="products.html" class="active">Products</a>
+                    <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+                    <a href="login.html">Account</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main content -->
+        <main id="main-content" class="container" role="main">
+            <!-- Products Header -->
+            <section class="hero" aria-labelledby="products-heading">
+                <h1 id="products-heading">ScribeAI Premium Plans</h1>
+                <p>Upgrade your note-taking experience with our premium features</p>
+            </section>
+
+            <!-- Products Grid -->
+            <section class="products-grid" aria-labelledby="plans-heading">
+                <h2 id="plans-heading" class="sr-only">Available Plans</h2>
+                
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3>Basic</h3>
+                        <div class="price">Free</div>
+                    </div>
+                    <ul class="features-list">
+                        <li>✓ Basic note editor</li>
+                        <li>✓ Up to 5 notebooks</li>
+                        <li>✓ 100MB storage</li>
+                        <li>✓ Standard formatting</li>
+                    </ul>
+                    <button class="btn btn-secondary" onclick="addToCart('basic')">
+                        Current Plan
+                    </button>
+                </div>
+
+                <div class="product-card featured">
+                    <div class="product-badge">Most Popular</div>
+                    <div class="product-header">
+                        <h3>Pro</h3>
+                        <div class="price">$9.99<span>/month</span></div>
+                    </div>
+                    <ul class="features-list">
+                        <li>✓ Advanced editor</li>
+                        <li>✓ Unlimited notebooks</li>
+                        <li>✓ 10GB storage</li>
+                        <li>✓ AI-powered organization</li>
+                        <li>✓ Export to PDF/Word</li>
+                        <li>✓ Priority support</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="addToCart('pro')">
+                        Upgrade to Pro
+                    </button>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3>Team</h3>
+                        <div class="price">$24.99<span>/month</span></div>
+                    </div>
+                    <ul class="features-list">
+                        <li>✓ All Pro features</li>
+                        <li>✓ Up to 5 team members</li>
+                        <li>✓ Collaborative editing</li>
+                        <li>✓ Shared notebooks</li>
+                        <li>✓ Admin controls</li>
+                        <li>✓ 24/7 premium support</li>
+                    </ul>
+                    <button class="btn btn-secondary" onclick="addToCart('team')">
+                        Choose Team
+                    </button>
+                </div>
+            </section>
+
+            <!-- Additional Products -->
+            <section class="addons-section" aria-labelledby="addons-heading">
+                <h2 id="addons-heading">Additional Features</h2>
+                <div class="addons-grid">
+                    <div class="addon-card">
+                        <h4>AI Writing Assistant</h4>
+                        <p>Advanced AI that helps improve your writing</p>
+                        <div class="addon-price">$4.99/month</div>
+                        <button class="btn btn-outline" onclick="addToCart('ai-assistant')">
+                            Add to Cart
+                        </button>
+                    </div>
+                    
+                    <div class="addon-card">
+                        <h4>Cloud Backup</h4>
+                        <p>Automatic cloud synchronization</p>
+                        <div class="addon-price">$2.99/month</div>
+                        <button class="btn btn-outline" onclick="addToCart('cloud-backup')">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <p style="color: #ffffff; margin-bottom: 1rem;">For Questions, Comments, and Concerns:</p>
+        <div>
+            <a href="mailto:firestar9jr@gmail.com" style="color: #9ca3af; text-decoration: none; margin-right: 1rem;">
+                [Email - firestar9jr@gmail.com]
+            </a>
+            <a href="https://github.com/AdrienLawrence" target="_blank" rel="noopener noreferrer" 
+                style="color: #9ca3af; text-decoration: none; margin-right: 1rem;">
+                [GitHub - AdrienLawrence]
+            </a>
+            <a href="https://www.linkedin.com/in/adrien-lawrence-b1483431b" target="_blank" rel="noopener noreferrer" 
+                style="color: #9ca3af; text-decoration: none;">
+                [LinkedIn - Adrien Lawrence]
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        // Cart functionality
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('scribeai-cart') || '[]');
+            document.getElementById('cart-count').textContent = cart.length;
+        }
+
+        function addToCart(productId) {
+            const products = {
+                'basic': { name: 'Basic Plan', price: 0 },
+                'pro': { name: 'Pro Plan', price: 9.99 },
+                'team': { name: 'Team Plan', price: 24.99 },
+                'ai-assistant': { name: 'AI Writing Assistant', price: 4.99 },
+                'cloud-backup': { name: 'Cloud Backup', price: 2.99 }
+            };
+
+            const product = products[productId];
+            if (!product) return;
+
+            let cart = JSON.parse(localStorage.getItem('scribeai-cart') || '[]');
+            
+            // Remove existing plans if adding a new plan (only one plan allowed)
+            if (['basic', 'pro', 'team'].includes(productId)) {
+                cart = cart.filter(item => !['basic', 'pro', 'team'].includes(item.id));
+            }
+            
+            // Add new item
+            cart.push({
+                id: productId,
+                name: product.name,
+                price: product.price,
+                quantity: 1
+            });
+
+            localStorage.setItem('scribeai-cart', JSON.stringify(cart));
+            updateCartCount();
+            
+            // Show confirmation
+            alert(`${product.name} added to cart!`);
+            
+            // Redirect to cart if it's a paid product
+            if (product.price > 0) {
+                setTimeout(() => {
+                    window.location.href = 'cart.html';
+                }, 1000);
+            }
+        }
+
+        // Initialize cart count
+        document.addEventListener('DOMContentLoaded', updateCartCount);
+    </script>
+</body>
+</html>
