@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Notebooks</title>
+    <title>My Notebooks - ScribeAI</title>
     <link rel="stylesheet" href="project.css">
 </head>
 <body>
@@ -12,11 +12,27 @@
         <header class="header">
             <div class="container header-content">
                 <a href="index.html" class="logo">ScribeAI</a>
-                <button class="btn btn-secondary">Menu</button>
+                <nav class="nav">
+                    <a href="notebooks.html" class="active">My Notebooks</a>
+                    <a href="products.html">Upgrade Plan</a>
+                    <a href="index.html" onclick="logout()">Logout</a>
+                    <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+                </nav>
             </div>
         </header>
 
         <main class="dashboard-main container">
+            <!-- User Plan Status -->
+            <section class="plan-status" aria-labelledby="plan-heading">
+                <h2 id="plan-heading">Your Current Plan: <span id="current-plan">Basic</span></h2>
+                <p id="plan-features" style="color: #9ca3af; margin-bottom: 1rem;">
+                    ✓ 5 notebooks • ✓ 100MB storage • ✓ Basic features
+                </p>
+                <a href="products.html" class="btn btn-primary">
+                    Upgrade Your Plan
+                </a>
+            </section>
+
             <h1>My Notebooks</h1>
             <p style="color: #9ca3af; margin-bottom: 2rem;">Create and Manage your digital notebooks</p>
 
@@ -43,21 +59,128 @@
                         <img src="Screenshot 2025-11-11 202721.png" alt="Notebook 5 preview">
                         <p>Notebook 5</p>
                     </a>
-                    <a href="editor.html" class="gallery-item">
+                    
+                    <!-- Notebook 6-8 only visible on Pro/Team plans -->
+                    <div class="gallery-item premium-feature" id="notebook6">
                         <img src="Screenshot 2025-11-11 202721.png" alt="Notebook 6 preview">
                         <p>Notebook 6</p>
-                    </a>
-                    <a href="editor.html" class="gallery-item">
+                        <div class="premium-overlay">
+                            <p>Upgrade to create more notebooks</p>
+                            <a href="products.html" class="btn btn-primary btn-small">Upgrade</a>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item premium-feature" id="notebook7">
                         <img src="Screenshot 2025-11-11 202721.png" alt="Notebook 7 preview">
                         <p>Notebook 7</p>
-                    </a>
-                    <a href="editor.html" class="gallery-item">
+                        <div class="premium-overlay">
+                            <p>Upgrade to create more notebooks</p>
+                            <a href="products.html" class="btn btn-primary btn-small">Upgrade</a>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item premium-feature" id="notebook8">
                         <img src="Screenshot 2025-11-11 202721.png" alt="Notebook 8 preview">
                         <p>Notebook 8</p>
-                    </a>
+                        <div class="premium-overlay">
+                            <p>Upgrade to create more notebooks</p>
+                            <a href="products.html" class="btn btn-primary btn-small">Upgrade</a>
+                        </div>
+                    </div>
                 </div>
+            </section>
+
+            <!-- Storage Usage -->
+            <section class="storage-section" aria-labelledby="storage-heading">
+                <h2 id="storage-heading">Storage Usage</h2>
+                <div class="storage-bar">
+                    <div class="storage-progress" id="storage-progress" style="width: 25%"></div>
+                </div>
+                <p style="color: #9ca3af; margin-top: 0.5rem;">
+                    <span id="storage-used">25 MB</span> of <span id="storage-total">100 MB</span> used
+                </p>
             </section>
         </main>
     </div>
+
+    <script>
+        // Check user's current plan and update UI accordingly
+        function updateUserPlan() {
+            const userPlan = localStorage.getItem('scribeai-user-plan') || 'basic';
+            const cart = JSON.parse(localStorage.getItem('scribeai-cart') || '[]');
+            
+            // Update cart count
+            document.getElementById('cart-count').textContent = cart.length;
+            
+            // Update plan display
+            document.getElementById('current-plan').textContent = 
+                userPlan.charAt(0).toUpperCase() + userPlan.slice(1);
+            
+            // Update plan features and limits
+            updatePlanFeatures(userPlan);
+            
+            // Enable/disable premium features based on plan
+            togglePremiumFeatures(userPlan);
+        }
+        
+        function updatePlanFeatures(plan) {
+            const featuresElement = document.getElementById('plan-features');
+            const storageUsed = document.getElementById('storage-used');
+            const storageTotal = document.getElementById('storage-total');
+            const storageProgress = document.getElementById('storage-progress');
+            
+            switch(plan) {
+                case 'pro':
+                    featuresElement.innerHTML = '✓ Unlimited notebooks • ✓ 10GB storage • ✓ AI features • ✓ Export options • ✓ Priority support';
+                    storageTotal.textContent = '10 GB';
+                    storageProgress.style.width = '2%'; // 200MB of 10GB
+                    storageUsed.textContent = '200 MB';
+                    break;
+                case 'team':
+                    featuresElement.innerHTML = '✓ All Pro features • ✓ Team collaboration • ✓ Shared notebooks • ✓ Admin controls • ✓ 24/7 support';
+                    storageTotal.textContent = '50 GB';
+                    storageProgress.style.width = '1%'; // 500MB of 50GB
+                    storageUsed.textContent = '500 MB';
+                    break;
+                default: // basic
+                    featuresElement.innerHTML = '✓ 5 notebooks • ✓ 100MB storage • ✓ Basic features';
+                    storageTotal.textContent = '100 MB';
+                    storageProgress.style.width = '25%'; // 25MB of 100MB
+                    storageUsed.textContent = '25 MB';
+            }
+        }
+        
+        function togglePremiumFeatures(plan) {
+            const premiumItems = document.querySelectorAll('.premium-feature');
+            
+            if (plan === 'basic') {
+                // Basic plan - show upgrade prompts
+                premiumItems.forEach(item => {
+                    item.classList.add('premium-locked');
+                    item.style.pointerEvents = 'none';
+                });
+            } else {
+                // Pro or Team plan - enable all features
+                premiumItems.forEach(item => {
+                    item.classList.remove('premium-locked');
+                    item.style.pointerEvents = 'auto';
+                    // Remove overlay for premium users
+                    const overlay = item.querySelector('.premium-overlay');
+                    if (overlay) {
+                        overlay.style.display = 'none';
+                    }
+                });
+            }
+        }
+        
+        function logout() {
+            // Clear user session (in a real app, this would clear authentication tokens)
+            localStorage.removeItem('scribeai-user-plan');
+            alert('You have been logged out.');
+            // Redirect would typically go to login page
+            window.location.href = 'login.html';
+        }
+        
+    </script>
 </body>
 </html>
