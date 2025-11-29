@@ -9,21 +9,66 @@
 <body>
     <div class="editor-container">
 
-        <!-- Simple Sidebar -->
+        <!-- Original Sidebar -->
         <div class="sidebar">
-            <!-- Character Counter -->
             <div class="sidebar-section">
-                <div class="sidebar-label">Character Count</div>
-                <div class="character-counter">
-                    <span id="char-count">0</span>/2000
+                <div class="sidebar-label">Mode</div>
+                <select class="sidebar-btn">
+                    <option>Write</option>
+                    <option>Read</option>
+                </select>
+            </div>
+
+            <!-- Text formatting -->
+            <div class="sidebar-section">
+                <div class="sidebar-label">Format</div>
+                <div class="formatting-grid">
+                    <button class="formatting-btn" onclick="showDemoMessage()">B</button>
+                    <button class="formatting-btn" onclick="showDemoMessage()">I</button>
+                    <button class="formatting-btn" onclick="showDemoMessage()">U</button>
+                    <button class="formatting-btn" onclick="showDemoMessage()">S</button>
                 </div>
             </div>
 
-            <!-- File options -->
+            <!-- Text styling-->
+            <div class="sidebar-section">
+                <div class="sidebar-label">Font</div>
+                <select class="sidebar-btn">
+                    <option>Arial</option>
+                    <option>Times New Roman</option>
+                </select>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-label">Size</div>
+                <input type="text" value="12" class="sidebar-btn">
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-label">Color</div>
+                <input type="color" class="sidebar-btn">
+            </div>
+
+            <!-- Page formatting -->
+            <div class="sidebar-section">
+                <div class="sidebar-label">Alignment</div>
+                <button class="sidebar-btn" onclick="showDemoMessage()">Left</button>
+                <button class="sidebar-btn" onclick="showDemoMessage()">Center</button>
+                <button class="sidebar-btn" onclick="showDemoMessage()">Right</button>
+            </div>
+
+            <!-- List options -->
+            <div class="sidebar-section">
+                <div class="sidebar-label">Lists</div>
+                <button class="sidebar-btn" onclick="showDemoMessage()">• Bullets</button>
+                <button class="sidebar-btn" onclick="showDemoMessage()">1. Numbers</button>
+            </div>
+
+            <!-- File options-->
             <div class="sidebar-section">
                 <div class="sidebar-label">File</div>
-                <button type="button" class="sidebar-btn" id="save-btn">Save</button>
-                <button type="button" class="sidebar-btn" onclick="location.href='notebooks.html'">Home</button>
+                <button class="sidebar-btn" id="save-btn">Save</button>
+                <button class="sidebar-btn" onclick="location.href='notebooks.html'">Home</button>
             </div>
         </div>
 
@@ -37,13 +82,13 @@
             </button>
         </div>
 
-        <!-- Main Content with Properly Sized Text Box -->
+        <!-- Main Content -->
         <div class="main-content">
             <div class="paper">
                 <input type="text" class="title-input" id="page-title" 
                        placeholder="Page Title">
                 
-                <!-- Full Page Text Area -->
+                <!-- Text Area -->
                 <textarea class="editor-textarea" id="editor-content" 
                           placeholder="Start typing your notes here..."></textarea>
                 
@@ -56,10 +101,9 @@
     </div>
 
     <script>
-        // Simple character counter and basic functionality
+        // Simple functionality for text box
         function initializeEditor() {
             const textarea = document.getElementById('editor-content');
-            const charCounter = document.getElementById('char-count');
             const statusMessage = document.getElementById('status-message');
             const saveButton = document.getElementById('save-btn');
             const titleInput = document.getElementById('page-title');
@@ -67,34 +111,8 @@
             // Load any saved content
             loadSavedContent();
             
-            // Character counter
+            // Track changes for status
             textarea.addEventListener('input', function() {
-                const charCount = this.value.length;
-                charCounter.textContent = charCount;
-                
-                // Update character count colors using CSS classes
-                charCounter.classList.remove('char-warning', 'char-danger');
-                if (charCount > 1800) {
-                    charCounter.classList.add('char-warning');
-                } else if (charCount >= 2000) {
-                    charCounter.classList.add('char-danger');
-                }
-                
-                // Enforce character limit
-                if (charCount > 2000) {
-                    this.value = this.value.substring(0, 2000);
-                    charCounter.textContent = '2000';
-                    charCounter.classList.add('char-danger');
-                    statusMessage.textContent = 'Character limit reached!';
-                    statusMessage.style.color = '#ef4444';
-                    
-                    // Clear status message after 3 seconds
-                    setTimeout(() => {
-                        statusMessage.textContent = 'Ready to type';
-                        statusMessage.style.color = '#6b7280';
-                    }, 3000);
-                }
-                
                 updateStatus('Unsaved changes');
             });
             
@@ -131,24 +149,11 @@
                     }, 2000);
                 }
             }, 30000);
-            
-            // Initial character count update
-            updateCharacterCount();
         }
         
-        // Update character count on load
-        function updateCharacterCount() {
-            const textarea = document.getElementById('editor-content');
-            const charCount = textarea.value.length;
-            const charCounter = document.getElementById('char-count');
-            charCounter.textContent = charCount;
-            
-            charCounter.classList.remove('char-warning', 'char-danger');
-            if (charCount > 1800) {
-                charCounter.classList.add('char-warning');
-            } else if (charCount >= 2000) {
-                charCounter.classList.add('char-danger');
-            }
+        // Show demo message for non-functional buttons
+        function showDemoMessage() {
+            alert('This is a demo feature. In a full implementation, this button would format your text.');
         }
         
         // Update status message
@@ -167,7 +172,6 @@
             };
         }
         
- 
         // Simple navigation
         function navigatePage(direction) {
             const pageAction = direction > 0 ? 'next' : 'previous';
