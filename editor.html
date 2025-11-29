@@ -5,71 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editor - ScribeAI</title>
     <link rel="stylesheet" href="project.css">
-    <style>
-        /* Fix text area sizing */
-        .editor-textarea {
-            width: 100%;
-            height: 70vh; /* Use viewport height instead of rows */
-            border: none;
-            resize: none;
-            font-family: inherit;
-            font-size: 1rem;
-            line-height: 1.6;
-            padding: 1rem;
-            background: transparent;
-            color: #000000;
-            box-sizing: border-box; /* Include padding in width/height */
-        }
-
-        .editor-textarea:focus {
-            outline: none;
-        }
-
-        .editor-textarea::placeholder {
-            color: #9ca3af;
-            font-style: italic;
-        }
-
-        /* Fix paper container */
-        .paper {
-            width: 100%;
-            min-height: 80vh;
-            background: white;
-            padding: 2rem;
-            color: #000000;
-            box-sizing: border-box;
-        }
-
-        /* Character counter */
-        .character-counter {
-            text-align: center;
-            padding: 0.5rem;
-            background: #374151;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-
-        /* Status message */
-        .editor-status {
-            margin-top: 1rem;
-            padding-top: 0.5rem;
-            border-top: 1px solid #e5e7eb;
-            font-size: 0.8rem;
-            color: #6b7280;
-            text-align: center;
-        }
-
-        /* Make main content area fill space */
-        .main-content {
-            flex: 1;
-            padding: 1rem;
-            background: #000000;
-            display: flex;
-            justify-content: center;
-            overflow-y: auto;
-        }
-    </style>
 </head>
 <body>
     <div class="editor-container">
@@ -106,7 +41,7 @@
         <div class="main-content">
             <div class="paper">
                 <input type="text" class="title-input" id="page-title" 
-                       placeholder="Page Title" style="width: 100%; margin-bottom: 1rem;">
+                       placeholder="Page Title">
                 
                 <!-- Full Page Text Area -->
                 <textarea class="editor-textarea" id="editor-content" 
@@ -129,31 +64,27 @@
             const saveButton = document.getElementById('save-btn');
             const titleInput = document.getElementById('page-title');
             
-            console.log('Editor initialized'); // Debug log
-            
             // Load any saved content
             loadSavedContent();
             
-            // Character counter - FIXED
+            // Character counter
             textarea.addEventListener('input', function() {
                 const charCount = this.value.length;
-                console.log('Characters typed:', charCount); // Debug log
                 charCounter.textContent = charCount;
                 
-                // Change color when approaching limit
+                // Update character count colors using CSS classes
+                charCounter.classList.remove('char-warning', 'char-danger');
                 if (charCount > 1800) {
-                    charCounter.style.color = '#f59e0b'; // Orange warning
+                    charCounter.classList.add('char-warning');
                 } else if (charCount >= 2000) {
-                    charCounter.style.color = '#ef4444'; // Red error
-                } else {
-                    charCounter.style.color = '#ffffff'; // White
+                    charCounter.classList.add('char-danger');
                 }
                 
                 // Enforce character limit
                 if (charCount > 2000) {
                     this.value = this.value.substring(0, 2000);
                     charCounter.textContent = '2000';
-                    charCounter.style.color = '#ef4444';
+                    charCounter.classList.add('char-danger');
                     statusMessage.textContent = 'Character limit reached!';
                     statusMessage.style.color = '#ef4444';
                     
@@ -176,7 +107,7 @@
             saveButton.addEventListener('click', function() {
                 saveContent();
                 statusMessage.textContent = 'Saved successfully!';
-                statusMessage.style.color = '#10b981'; // Green success
+                statusMessage.style.color = '#10b981';
                 
                 // Clear success message after 2 seconds
                 setTimeout(() => {
@@ -190,7 +121,7 @@
                 if (statusMessage.textContent === 'Unsaved changes') {
                     saveContent();
                     statusMessage.textContent = 'Auto-saved';
-                    statusMessage.style.color = '#60a5fa'; // Blue info
+                    statusMessage.style.color = '#60a5fa';
                     
                     setTimeout(() => {
                         if (statusMessage.textContent === 'Auto-saved') {
@@ -212,12 +143,11 @@
             const charCounter = document.getElementById('char-count');
             charCounter.textContent = charCount;
             
+            charCounter.classList.remove('char-warning', 'char-danger');
             if (charCount > 1800) {
-                charCounter.style.color = '#f59e0b';
+                charCounter.classList.add('char-warning');
             } else if (charCount >= 2000) {
-                charCounter.style.color = '#ef4444';
-            } else {
-                charCounter.style.color = '#ffffff';
+                charCounter.classList.add('char-danger');
             }
         }
         
@@ -225,7 +155,7 @@
         function updateStatus(message) {
             const statusMessage = document.getElementById('status-message');
             statusMessage.textContent = message;
-            statusMessage.style.color = '#f59e0b'; // Yellow for unsaved
+            statusMessage.style.color = '#f59e0b';
         }
         
         // Save content, doesn't actually save anywhere
@@ -235,11 +165,9 @@
                 content: document.getElementById('editor-content').value,
                 lastSaved: new Date().toLocaleString()
             };
-            
-            localStorage.setItem('scribeai-editor-content', JSON.stringify(content));
-            console.log('Content saved'); // Debug log
         }
         
+ 
         // Simple navigation
         function navigatePage(direction) {
             const pageAction = direction > 0 ? 'next' : 'previous';
