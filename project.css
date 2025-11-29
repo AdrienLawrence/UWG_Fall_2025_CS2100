@@ -1020,8 +1020,7 @@ body {
 
 .editor-textarea {
     width: 100%;
-    height: 1000px !important;
-    background: red !important;
+    height: 800px !important;
     border: none;
     resize: none;
     font-family: inherit;
@@ -1074,6 +1073,7 @@ body {
     color: #6b7280;
     text-align: center;
 }
+
 
 
 
